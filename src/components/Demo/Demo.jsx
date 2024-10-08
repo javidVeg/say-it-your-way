@@ -1,45 +1,34 @@
 import React, { useState } from "react";
-import FunctionalInput from "../FunctionalInput/FunctionalInput";
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import SayItYourWayInput from "../SayItYourWayInput/SayItYourWayInput";
+import "./demo-styles.css";
+import MuiSelect from "./MuiSelect"
 
-const MuiInput = () => {
-  return (
-    <FormControl fullWidth>
-      <InputLabel id="demo-gender-select-label">Gender Identity</InputLabel>
-      <Select
-        labelId="demo-gender-select-label"
-        id="demo-gender-select"
-        label="Gender Identity"
-        fullWidth
-      ></Select>
-    </FormControl>
-  );
-};
 
 const Demo = () => {
   const [genderValue, setGenderValue] = useState("");
-  
 
-  const onGenderChange = (event) => {
-    console.log(event.target.value);
-    setGenderValue(event.target.value);
+  const onGenderChange = (item) => {
+    console.log(item);
+    setGenderValue(item);
   };
 
   return (
-    <>
-      <FunctionalInput
-        type="select"
-        variant="gender"
+    <div className="main-container">
+      <SayItYourWayInput
+        type="multi-select"
+        // type="select"
+        // variant="gender"
+        variant="pronouns"
         onChange={onGenderChange}
         value={genderValue}
-        // inputProps={<MuiInput />}
-        // label
-        // placeholder
-        helperText='Please select'
+        // inputComponent={MuiSelect}
+        label='Gender Identity'
+        placeholder='Gender Identity'
+        helperText="Please select your gender identity"
         // error='Please select an option'
         // disabled
       />
-    </>
+    </div>
   );
 };
 
