@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import SayItYourWayInput from "../SayItYourWayInput/SayItYourWayInput";
 import "./demo-styles.css";
 import MuiSelect from "./MuiSelect"
+import MuiMultiSelect from "./MuiMultiSelect"
 
 
 const Demo = () => {
@@ -21,7 +22,7 @@ const Demo = () => {
         variant="pronouns"
         onChange={onGenderChange}
         value={genderValue}
-        // inputComponent={MuiSelect}
+        // inputComponent={MuiMultiSelect}
         label='Gender Identity'
         placeholder='Gender Identity'
         helperText="Please select your gender identity"

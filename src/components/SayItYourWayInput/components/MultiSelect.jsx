@@ -1,63 +1,102 @@
 import React, { useState } from "react";
 
-// MultiSelect component
 const MultiSelect = (props) => {
-  const { options = [], placeholder = "Select pronouns...", disabled } = props;
+  const {
+    options = [],
+    placeholder = "Select pronouns...",
+    disabled,
+    label,
+  } = props;
+  const [pronouns, setPronouns] = React.useState([]);
+  const [isOpen, setIsOpen] = React.useState(false);
 
-  const [selectedPronouns, setSelectedPronouns] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
+  const handleChange = (option) => {
+    const { value } = option;
 
-  // Handle the selection of pronouns
-  const handlePronounChange = (nominative) => {
-    setSelectedPronouns((prevSelected) => {
-      if (prevSelected.some((pronoun) => pronoun.nominative === nominative)) {
-        // If pronoun is already selected, remove it
-        return prevSelected.filter((pronoun) => pronoun.nominative !== nominative);
+    setPronouns((prevPronouns) => {
+      const alreadySelected =
+        prevPronouns.includes(value) ||
+        prevPronouns.includes(option.nominative);
+
+      if (alreadySelected) {
+        // if already selected, remove it
+        const newPronouns = prevPronouns.filter(
+          (pronoun) => pronoun !== value && pronoun !== option.nominative
+        );
+
+        // if only one pronoun is left, re-add the part after the '/'
+        if (newPronouns.length === 1) {
+          const firstPronounValue = options.find(
+            (option) =>
+              option.nominative === newPronouns[0] ||
+              option.value === newPronouns[0]
+          )?.value;
+          return [firstPronounValue];
+        }
+
+        return newPronouns;
       } else {
-        // If not, add it to the list
-        const selectedPronoun = options.find((pronoun) => pronoun.nominative === nominative);
-        return [...prevSelected, selectedPronoun];
+        // if not selected, add it
+        if (prevPronouns.length === 0) {
+          return [value]; // first selection keeps the full value
+        } else {
+          const firstPronounWithoutSlash = prevPronouns[0].split("/")[0];
+
+          // when adding additional selections, remove part after '/' for the first value
+          const updatedPronouns = [
+            firstPronounWithoutSlash,
+            ...prevPronouns.slice(1),
+            value.split("/")[0],
+          ];
+
+          return updatedPronouns;
+        }
       }
     });
   };
 
-  // Display selected nominative values separated by "/"
-  const getDisplayValue = () => {
-    return selectedPronouns.map((pronoun) => pronoun.nominative).join(" / ") || placeholder;
+  const isChecked = (pronouns, option) => {
+    return (
+      pronouns.includes(option.value) || pronouns.includes(option.nominative)
+    );
   };
 
-  // Toggle dropdown open/close
   const toggleDropdown = () => {
-    if (!disabled) {
-      setIsOpen(!isOpen);
-    }
+    setIsOpen(!isOpen);
+  };
+
+  const closeDropdown = () => {
+    setIsOpen(false);
   };
 
   return (
-    <div className="multi-select-container">
-      <div className={`multi-select-input ${disabled ? "disabled" : ""}`} onClick={toggleDropdown}>
-        <span>{getDisplayValue()}</span>
-        <span className="dropdown-arrow">{isOpen ? "▲" : "▼"}</span>
+    <div className="custom-select-container">
+      <label>{label}</label>
+      <div className="custom-select-input" onClick={toggleDropdown}>
+        <span>
+          {pronouns.length > 0 ? pronouns.join("/") : "Select pronouns"}
+        </span>
+        <span className="arrow">{isOpen ? "▲" : "▼"}</span>
       </div>
+
       {isOpen && (
-        <div className="multi-select-dropdown">
-          {options.map((pronoun, index) => (
-            <label key={index} className="multi-select-option">
+        <div className="custom-select-dropdown">
+          {options.map((option, index) => (
+            <div key={index} className="custom-select-option">
               <input
                 type="checkbox"
-                value={pronoun.nominative}
-                onChange={() => handlePronounChange(pronoun.nominative)}
-                checked={selectedPronouns.some(
-                  (selected) => selected.nominative === pronoun.nominative
-                )}
+                id={`pronoun-${index}`}
+                checked={isChecked(pronouns, option)}
+                onChange={() => handleChange(option)}
               />
-              {pronoun.label}
-            </label>
+              <label htmlFor={`pronoun-${index}`}>{option.label}</label>
+            </div>
           ))}
         </div>
       )}
+
+      {isOpen && <div className="overlay" onClick={closeDropdown}></div>}
     </div>
   );
 };
-
 export default MultiSelect;

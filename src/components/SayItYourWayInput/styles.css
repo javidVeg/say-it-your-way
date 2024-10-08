@@ -40,77 +40,69 @@ input.disabled {
 }
 
 
-.multi-select-container {
+.custom-select-container {
     position: relative;
     width: 100%;
+    font-family: Arial, sans-serif;
   }
   
-  .multi-select-input {
+  label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .custom-select-input {
+    border: 1px solid #646cff;
+    border-radius: 8px;
     padding: 0.6em 1.2em;
     font-size: 1em;
     font-weight: 500;
-    font-family: inherit;
     background-color: #e9ecff;
-    border-radius: 8px;
-    border: 1px solid #646cff;
-    cursor: pointer;
-    transition: border-color 0.25s;
     color: #4d56ff;
-    width: 100%;
+    cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
   
-  .multi-select-input:hover {
-    border-color: #4d56ff;
+  .custom-select-dropdown {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #646cff;
+    border-radius: 8px;
+    margin-top: 5px;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1;
   }
   
-  .multi-select-input.disabled {
-    background-color: #cdcccc;
-    color: #696969;
-    cursor: not-allowed;
-    border: 1px solid #888;
+  .custom-select-option {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    color: #4d56ff;
   }
   
-  .dropdown-arrow {
+  .custom-select-option input {
+    margin-right: 10px;
+  }
+  
+  .custom-select-option:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .arrow {
     margin-left: 10px;
   }
   
-  .multi-select-dropdown {
-    position: absolute;
-    top: 100%;
+  .overlay {
+    position: fixed;
+    top: 0;
     left: 0;
     right: 0;
-    background-color: #e9ecff;
-    border: 1px solid #646cff;
-    border-radius: 8px;
-    z-index: 1;
-    max-height: 200px;
-    overflow-y: auto;
-  }
-  
-  .multi-select-option {
-    padding: 0.6em 1.2em;
-    font-size: 1em;
-    font-family: inherit;
-    font-weight: 500;
-    color: #4d56ff;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    transition: background-color 0.25s;
-  }
-  
-  .multi-select-option input {
-    margin-right: 0.5em;
-  }
-  
-  .multi-select-option:hover {
-    background-color: #d8def7;
-  }
-  
-  .multi-select-option input:checked ~ label {
-    background-color: #4d56ff;
-    color: white;
+    bottom: 0;
+    background-color: transparent;
+    z-index: 0;
   }
