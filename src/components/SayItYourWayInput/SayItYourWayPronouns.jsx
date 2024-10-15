@@ -6,7 +6,7 @@ import SelectInput from "./components/SelectInput";
 import MultiSelect from "./components/MultiSelect"
 
 // SayItYourWayInput component onChange returns the selected option object instead of the event object.
-const SayItYourWayInput = ({
+const SayItYourWayPronouns = ({
   onChange,
   inputComponent: InputComponent,
   variant,
@@ -15,7 +15,7 @@ const SayItYourWayInput = ({
   helperText,
   error,
   disabled,
-  type,
+  selectionType,
   value = "",
 }) => {
 
@@ -37,7 +37,7 @@ const SayItYourWayInput = ({
       const selectedOption = options.find(
         (option) => option.value === event.target.value
       );
-      onChange(selectedOption);
+      onChange(selectedOption.value);
     },
     [onChange, options]
   );
@@ -46,12 +46,12 @@ const SayItYourWayInput = ({
     <div className={`input-container ${disabled ? "disabled" : ""}`}>
       {InputComponent ? (
         <InputComponent
-          value={value?.value || ""}
+          value={value || ""}
           onChange={handleSelectChange}
           disabled={disabled}
           options={options}
         />
-      ) : type === "select" ? (
+      ) : selectionType === "select" ? (
         <SelectInput
           value={value || ""}
           onChange={handleSelectChange}
@@ -75,4 +75,4 @@ const SayItYourWayInput = ({
   );
 };
 
-export default SayItYourWayInput;
+export default SayItYourWayPronouns;

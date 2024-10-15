@@ -14,9 +14,6 @@ const MuiSelect = ({ value, onChange, options, label }) => {
           onChange={onChange}
           fullWidth
         >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
           {options.map((option, index) => (
             <MenuItem key={index} value={option.value}>
               {option.label}

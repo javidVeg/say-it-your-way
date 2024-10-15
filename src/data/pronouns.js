@@ -4,9 +4,6 @@ export const pronouns = [
       label: 'They/Them',
       nominative: 'they',
       accusative: 'them',
-      possessiveAdjective: 'their',
-      possessivePronoun: 'theirs',
-      reflexive: 'themselves',
       value: 'they/them',
     },
     {
@@ -14,19 +11,13 @@ export const pronouns = [
       label: 'She/Her',
       nominative: 'she',
       accusative: 'her',
-      possessiveAdjective: 'her',
-      possessivePronoun: 'hers',
-      reflexive: 'herself',
       value: 'she/her',
     },
     {
       id: 3,
       label: 'He/Him',
       nominative: 'he',
-      accusative: 'him',
-      possessiveAdjective: 'his',
-      possessivePronoun: 'his',
-      reflexive: 'himself',
+      accusative: 'him', 
       value: 'he/him',
     },
     {
@@ -34,9 +25,6 @@ export const pronouns = [
       label: 'Xe/Xem',
       nominative: 'xe',
       accusative: 'xem',
-      possessiveAdjective: 'xyr',
-      possessivePronoun: 'xyrs',
-      reflexive: 'xemself',
       value: 'xe/xem',
     },
     {
@@ -44,9 +32,6 @@ export const pronouns = [
       label: 'Ze/Hir',
       nominative: 'ze',
       accusative: 'hir',
-      possessiveAdjective: 'hir',
-      possessivePronoun: 'hirs',
-      reflexive: 'hirself',
       value: 'ze/hir',
     },
     {
@@ -54,9 +39,6 @@ export const pronouns = [
       label: 'Ey/Em',
       nominative: 'ey',
       accusative: 'em',
-      possessiveAdjective: 'eir',
-      possessivePronoun: 'eirs',
-      reflexive: 'emself',
       value: 'ey/em',
     },
     {
@@ -64,9 +46,6 @@ export const pronouns = [
       label: 'Ve/Ver',
       nominative: 've',
       accusative: 'ver',
-      possessiveAdjective: 'vis',
-      possessivePronoun: 'vis',
-      reflexive: 'verself',
       value: 've/ver',
     },
     {
@@ -74,9 +53,6 @@ export const pronouns = [
       label: 'Fae/Faer',
       nominative: 'fae',
       accusative: 'faer',
-      possessiveAdjective: 'faer',
-      possessivePronoun: 'faers',
-      reflexive: 'faerself',
       value: 'fae/faer',
     },
     {
@@ -84,9 +60,7 @@ export const pronouns = [
       label: 'It/Its',
       nominative: 'it',
       accusative: 'it',
-      possessiveAdjective: 'its',
-      possessivePronoun: 'its',
-      reflexive: 'itself',
+ 
       value: 'it/its',
     },
     {
@@ -94,9 +68,6 @@ export const pronouns = [
       label: 'Per/Per',
       nominative: 'per',
       accusative: 'per',
-      possessiveAdjective: 'per',
-      possessivePronoun: 'pers',
-      reflexive: 'perself',
       value: 'per/per',
     },
     {
@@ -104,9 +75,6 @@ export const pronouns = [
       label: 'E/Em',
       nominative: 'e',
       accusative: 'em',
-      possessiveAdjective: 'eir',
-      possessivePronoun: 'eirs',
-      reflexive: 'emself',
       value: 'e/em',
     },
     {
@@ -114,9 +82,6 @@ export const pronouns = [
       label: 'Thon/Thon',
       nominative: 'thon',
       accusative: 'thon',
-      possessiveAdjective: 'thon',
-      possessivePronoun: 'thons',
-      reflexive: 'thonself',
       value: 'thon/thon',
     },
     {
@@ -124,9 +89,6 @@ export const pronouns = [
       label: 'Co/Co',
       nominative: 'co',
       accusative: 'co',
-      possessiveAdjective: 'cos',
-      possessivePronoun: 'cos',
-      reflexive: 'coself',
       value: 'co/co',
     },
     {
@@ -134,9 +96,6 @@ export const pronouns = [
       label: 'En/En',
       nominative: 'en',
       accusative: 'en',
-      possessiveAdjective: 'ens',
-      possessivePronoun: 'ens',
-      reflexive: 'enself',
       value: 'en/en',
     },
     {
@@ -144,9 +103,6 @@ export const pronouns = [
       label: 'Yo/Yo',
       nominative: 'yo',
       accusative: 'yo',
-      possessiveAdjective: 'yos',
-      possessivePronoun: 'yos',
-      reflexive: 'yoself',
       value: 'yo/yo',
     },
     {
@@ -154,9 +110,6 @@ export const pronouns = [
       label: 'Xie/Hir',
       nominative: 'xie',
       accusative: 'hir',
-      possessiveAdjective: 'hir',
-      possessivePronoun: 'hirs',
-      reflexive: 'hirself',
       value: 'xie/hir',
     },
     {
@@ -164,9 +117,6 @@ export const pronouns = [
       label: 'Ze/Zir',
       nominative: 'ze',
       accusative: 'zir',
-      possessiveAdjective: 'zir',
-      possessivePronoun: 'zirs',
-      reflexive: 'zirself',
       value: 'ze/zir',
     },
   ];
