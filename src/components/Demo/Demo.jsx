@@ -7,7 +7,7 @@ import MuiMultiSelect from "./MuiMultiSelect";
 
 const Demo = () => {
   const [genderValue, setGenderValue] = useState("");
-  const [pronounsValue, setPronounsValue] = useState("they/them");
+  const [pronounsValue, setPronounsValue] = useState("he/she");
 
   const onGenderChange = (item) => {
     console.log("genderValue::", item);
@@ -21,7 +21,7 @@ const Demo = () => {
   return (
     <div className="main-container">
       {/* Gender selection */}
-      <SayItYourWayGenderId
+      {/* <SayItYourWayGenderId
         key="gender"
         selectionType="select"
         onChange={onGenderChange}
@@ -32,10 +32,10 @@ const Demo = () => {
         customOptions={false}
         // error='Please select an option'
         // disabled
-      />
+      /> */}
 
       {/* Gender selection w/ custom component */}
-      <SayItYourWayGenderId
+      {/* <SayItYourWayGenderId
         key="gender-custom"
         selectionType="select"
         onChange={onGenderChange}
@@ -47,10 +47,10 @@ const Demo = () => {
         inputComponent={MuiSelect}
         // error='Please select an option'
         // disabled
-      />
+      /> */}
 
       {/* Pronoun selection */}
-      {/* <SayItYourWayPronouns
+      <SayItYourWayPronouns
         key="pronouns"
         selectionType="multi-select"
         onChange={onPronounsChange}
@@ -61,10 +61,10 @@ const Demo = () => {
         customOptions={false}
         // error='Please select an option'
         // disabled
-      /> */}
+      />
 
       {/* Pronoun selection w/ custom component */}
-      {/* <SayItYourWayPronouns
+      <SayItYourWayPronouns
         key="pronouns-custom"
         selectionType="multi-select"
         onChange={onPronounsChange}
@@ -76,7 +76,7 @@ const Demo = () => {
         inputComponent={MuiMultiSelect}
         // error='Please select an option'
         // disabled
-      /> */}
+      />
     </div>
   );
 };

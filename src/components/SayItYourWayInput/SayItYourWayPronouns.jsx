@@ -1,72 +1,80 @@
-import React, { useMemo, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import "./styles.css";
-import { genderIdentities } from "../../data/identity";
 import { pronouns } from "../../data/pronouns";
-import SelectInput from "./components/SelectInput";
-import MultiSelect from "./components/MultiSelect"
+import MultiSelect from "./components/MultiSelect";
 
-// SayItYourWayInput component onChange returns the selected option object instead of the event object.
 const SayItYourWayPronouns = ({
   onChange,
   inputComponent: InputComponent,
-  variant,
   label,
   placeholder = "Please select...",
   helperText,
   error,
   disabled,
-  selectionType,
-  value = "",
+  value = "", 
+  customOptions,
 }) => {
+  const [finalOptions, setFinalOptions] = useState(() => {
+    return customOptions ? customOptions : [...pronouns];
+  });
 
-  
-  const options = useMemo(() => {
-    switch (variant) {
-      case "gender":
-        return genderIdentities;
-      case "pronouns":
-        return pronouns;
-      default:
-        console.error("Invalid variant, please provide a valid variant");
-        return [];
+  const [selectedPronouns, setSelectedPronouns] = useState([]);
+
+  useEffect(() => {
+    if (value) {
+      const selectedValues = value.split("/");
+
+      const matchedPronouns = finalOptions.filter(option =>
+        selectedValues.includes(option[0]) 
+      ).map(option => option[0]);
+
+      setSelectedPronouns(matchedPronouns);
     }
-  }, [variant]);
+  }, [value, finalOptions]);
 
-  const handleSelectChange = useCallback(
-    (event) => {
-      const selectedOption = options.find(
-        (option) => option.value === event.target.value
-      );
-      onChange(selectedOption.value);
-    },
-    [onChange, options]
-  );
+  const handlePronounsChange = (newSelectedPronouns) => {
+    if (!Array.isArray(newSelectedPronouns)) {
+      console.error("newSelectedPronouns is not an array", newSelectedPronouns);
+      return;
+    }
+
+    const finalPronouns = formatPronounsForDisplay(newSelectedPronouns);
+
+    onChange(finalPronouns);
+  };
+
+  const formatPronounsForDisplay = (selectedPronouns) => {
+    const selectedGroups = finalOptions.filter(option =>
+      selectedPronouns.includes(option[0])
+    );
+
+    if (selectedGroups.length === 1) {
+      return selectedGroups[0].join("/"); 
+    }
+
+    return selectedPronouns.join("/"); 
+  };
 
   return (
     <div className={`input-container ${disabled ? "disabled" : ""}`}>
       {InputComponent ? (
         <InputComponent
           value={value || ""}
-          onChange={handleSelectChange}
+          onChange={handlePronounsChange}
           disabled={disabled}
-          options={options}
-        />
-      ) : selectionType === "select" ? (
-        <SelectInput
-          value={value || ""}
-          onChange={handleSelectChange}
-          disabled={disabled}
-          options={options}
+          options={finalOptions}
           placeholder={placeholder}
+          label={label}
         />
       ) : (
         <MultiSelect
           className={disabled ? "disabled" : ""}
-          value={value}
-          onChange={onChange}
+          value={selectedPronouns} 
+          onChange={handlePronounsChange}
           placeholder={!value ? placeholder : undefined}
+          label={label}
           disabled={disabled}
-          options={options}
+          options={finalOptions}
         />
       )}
       {!error && helperText && <p className="helper-text">{helperText}</p>}
