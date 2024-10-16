@@ -13,6 +13,7 @@ const SayItYourWayPronouns = ({
   disabled,
   value = "", // Incoming value (e.g., "she/they")
   customOptions,
+  variant
 }) => {
   const [finalOptions, setFinalOptions] = useState(() => {
     return customOptions ? customOptions : [...pronouns];
@@ -71,7 +72,7 @@ const SayItYourWayPronouns = ({
           label={label}
           disabled={disabled}
           options={finalOptions}
-          variant="outlined"
+          variant={variant}
         />
   
       {!error && helperText && <p className="helper-text">{helperText}</p>}

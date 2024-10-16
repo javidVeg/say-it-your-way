@@ -64,7 +64,6 @@ const MultiSelect = ({
     return placeholder;
   };
 
-  // Applying variant styles
   const variantClass = `siyw-select-${variant}`;
 
   return (
@@ -95,15 +94,15 @@ const MultiSelect = ({
               key={index}
               className="siyw-select-option"
               style={customStyles.option}
+              onClick={() => handlePronounChange(option)}
             >
               <input
                 type="checkbox"
                 id={`pronoun-${index}`}
                 checked={isChecked(option)}
-                onChange={() => handlePronounChange(option)}
                 disabled={disabled}
               />
-              <label htmlFor={`pronoun-${index}`}>{option.join("/")}</label>
+              <label htmlFor={`pronoun-${index}`}>{option.join(" / ")}</label>
             </div>
           ))}
         </div>
