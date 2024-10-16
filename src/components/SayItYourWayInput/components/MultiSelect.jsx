@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
+import "./../styles.css";
+import { ArrowIcon } from "./ArrowIcon"
 
-const MultiSelect = (props) => {
-  const {
-    options = [], 
-    placeholder = "Select pronouns...",
-    disabled,
-    label,
-    value = [],
-    onChange,
-  } = props;
-
-  const [selectedPronouns, setSelectedPronouns] = useState(value); 
+const MultiSelect = ({
+  value = [],
+  onChange,
+  options = [],
+  placeholder = "Select pronouns...",
+  disabled,
+  label,
+  variant = "standard", 
+  customStyles = {}, 
+  className = "", 
+}) => {
+  const [selectedPronouns, setSelectedPronouns] = useState(value);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -18,13 +21,13 @@ const MultiSelect = (props) => {
   }, [value]);
 
   const isChecked = (option) => {
-    return selectedPronouns.includes(option[0]); 
+    return selectedPronouns.includes(option[0]);
   };
 
   const handlePronounChange = (option) => {
     setSelectedPronouns((prevSelectedPronouns) => {
       let updatedPronouns;
-      const [nominative, accusative] = option; 
+      const [nominative, accusative] = option;
 
       if (prevSelectedPronouns.includes(nominative)) {
         updatedPronouns = prevSelectedPronouns.filter(
@@ -34,7 +37,7 @@ const MultiSelect = (props) => {
         updatedPronouns = [...prevSelectedPronouns, nominative, accusative];
       }
 
-      onChange(updatedPronouns); 
+      onChange(updatedPronouns);
       return updatedPronouns;
     });
   };
@@ -47,18 +50,52 @@ const MultiSelect = (props) => {
     setIsOpen(false);
   };
 
+  const formatPronounsForDisplay = () => {
+    const selectedGroups = options.filter((option) =>
+      selectedPronouns.includes(option[0])
+    );
+
+    if (selectedGroups.length === 1) {
+      return selectedGroups[0].join("/");
+    } else if (selectedGroups.length > 1) {
+      return selectedGroups.map((group) => group[0]).join("/");
+    }
+
+    return placeholder;
+  };
+
+  // Applying variant styles
+  const variantClass = `siyw-select-${variant}`;
+
   return (
-    <div className="custom-select-container">
+    <div
+      className={`siyw-select-container ${variantClass} ${className}`}
+      style={customStyles.container}
+    >
       <label>{label}</label>
-      <div className="custom-select-input" onClick={toggleDropdown}>
-        <span>{selectedPronouns.length > 0 ? selectedPronouns.join("/") : placeholder}</span>
-        <span className="arrow">{isOpen ? "▲" : "▼"}</span>
+      <div
+        className="siyw-select-input"
+        onClick={toggleDropdown}
+        style={customStyles.input}
+      >
+        <span>
+          {selectedPronouns.length > 0
+            ? formatPronounsForDisplay()
+            : placeholder}
+        </span>
+        <>
+          <ArrowIcon isOpen={isOpen} />
+        </>
       </div>
 
       {isOpen && (
-        <div className="custom-select-dropdown">
+        <div className="siyw-select-dropdown" style={customStyles.dropdown}>
           {options.map((option, index) => (
-            <div key={index} className="custom-select-option">
+            <div
+              key={index}
+              className="siyw-select-option"
+              style={customStyles.option}
+            >
               <input
                 type="checkbox"
                 id={`pronoun-${index}`}

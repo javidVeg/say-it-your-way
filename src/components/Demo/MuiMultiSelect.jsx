@@ -1,100 +1,48 @@
-import * as React from "react";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import ListItemText from "@mui/material/ListItemText";
-import Select from "@mui/material/Select";
-import Checkbox from "@mui/material/Checkbox";
+import React from 'react';
+import { MenuItem, Select, FormControl, InputLabel, Checkbox, ListItemText } from '@mui/material';
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
+const MuiMultiSelect = ({ value, onChange, options, disabled, label }) => {
+  // Format the display value based on selected pronouns
+  const formatPronounsForDisplay = (selectedPronouns) => {
+    const selectedGroups = options.filter(option =>
+      selectedPronouns.includes(option[0]) // Nominative is option[0]
+    );
 
-const MuiMultiSelect = ({ value, onChange, options, label }) => {
-  const [pronouns, setPronouns] = React.useState([]);
-
-  const handleChange = (event, option) => {
-    const { value } = option;
-
-    setPronouns((prevPronouns) => {
-      const alreadySelected =
-        prevPronouns.includes(value) ||
-        prevPronouns.includes(option.nominative);
-
-      if (alreadySelected) {
-        // if it's already selected, remove it
-        const newPronouns = prevPronouns.filter(
-          (pronoun) => pronoun !== value && pronoun !== option.nominative
-        );
-
-        // if only one pronoun is left, re-add the part after the '/'
-        if (newPronouns.length === 1) {
-          const firstPronounValue = options.find(
-            (option) =>
-              option.nominative === newPronouns[0] ||
-              option.value === newPronouns[0]
-          )?.value; // Find the full value of the remaining item
-          return [firstPronounValue];
-        }
-
-        return newPronouns;
-      } else {
-        // if not selected, add it
-        if (prevPronouns.length === 0) {
-          return [value]; // first selection keeps the full value
-        } else {
-          const firstPronounWithoutSlash = prevPronouns[0].split("/")[0];
-
-          // when adding additional selections, remove part after '/' for the first value
-          const updatedPronouns = [
-            firstPronounWithoutSlash,
-            ...prevPronouns.slice(1), // keep the remaining previous selections
-            value.split("/")[0], // add new selection without part after '/'
-          ];
-
-          return updatedPronouns;
-        }
-      }
-    });
+    // If only one group is selected, display both nominative and accusative
+    if (selectedGroups.length === 1) {
+      return selectedGroups[0].join("/"); // e.g., "he/him"
+    }
+    // If multiple groups are selected, display only nominative forms
+    return selectedGroups.map(group => group[0]).join("/"); // e.g., "he/she"
   };
 
-  const isChecked = (pronouns, option) => {
-    return (
-      pronouns.includes(option.value) || pronouns.includes(option.nominative)
-    );
+  const handleChange = (event) => {
+    const selectedValues = event.target.value;
+
+    // Check if more than one item is selected
+    if (selectedValues.length > 1) {
+      // Only keep the nominative forms (index 0) when multiple are selected
+      const nominativeOnly = selectedValues.map(val => val.split("/")[0]);
+      onChange(nominativeOnly); // Notify parent with nominative forms only
+    } else {
+      // If only one item is selected, pass the full nominative/accusative pair
+      onChange([selectedValues[0].split("/")[0]]); // Notify parent with nominative/accusative
+    }
   };
 
   return (
-    <FormControl fullWidth>
-      <InputLabel id="demo-multiple-checkbox-label">
-        Preferred Pronouns
-      </InputLabel>
+    <FormControl fullWidth disabled={disabled}>
+      <InputLabel>{label}</InputLabel>
       <Select
-        labelId="demo-multiple-checkbox-label"
-        id="demo-multiple-checkbox"
         multiple
-        fullWidth
-        value={pronouns}
-        input={<OutlinedInput label="Tag" />}
-        renderValue={(selected) => selected.join("/")}
-        MenuProps={MenuProps}
+        value={formatPronounsForDisplay(value).split("/")} // Use formatted value for display
+        onChange={handleChange}
+        renderValue={() => formatPronounsForDisplay(value)} // Display formatted pronouns
       >
-        {options.map((option, index) => (
-          <MenuItem
-            key={index}
-            value={option.value}
-            onClick={() => handleChange(null, option)}
-          >
-            <Checkbox checked={isChecked(pronouns, option)} />
-            <ListItemText primary={option.label} />
+        {options.map((option) => (
+          <MenuItem key={option[0]} value={option.join("/")}>
+            <Checkbox checked={value.includes(option[0])} />
+            <ListItemText primary={option.join("/")} /> {/* "he/him", "she/her" */}
           </MenuItem>
         ))}
       </Select>
