@@ -22,7 +22,6 @@ const SayItYourWayPronouns = (props) => {
   });
   const [selectedPronouns, setSelectedPronouns] = useState([]);
 
-
   useEffect(() => {
     if (value) {
       const selectedValues = value.split("/");
@@ -54,7 +53,6 @@ const SayItYourWayPronouns = (props) => {
       return selectedGroups[0].join("/");
     } else if (selectedGroups.length > 1) {
       const reversedSelectedGroups = selectedGroups.reverse();
-      console.log("selectedGroups!!!", reversedSelectedGroups);
 
       return reversedSelectedGroups.map((group) => group[0]).join("/");
     }
@@ -66,8 +64,8 @@ const SayItYourWayPronouns = (props) => {
       <MultiSelect
         className={disabled ? "disabled" : ""}
         selected={selectedPronouns}
-        value={value || ""} 
-        onChange={handlePronounsChange} 
+        value={value || ""}
+        onChange={handlePronounsChange}
         placeholder={!value ? placeholder : undefined}
         label={label}
         disabled={disabled}

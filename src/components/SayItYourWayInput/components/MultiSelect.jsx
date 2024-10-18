@@ -69,11 +69,9 @@ const MultiSelect = ({
     setIsOpen(false);
   };
 
-  const variantClass = `siyw-select-${variant}`;
-
   return (
     <div
-      className={`siyw-select-container ${variantClass} ${className}`}
+      className={`siyw-select-container siyw-select-standard ${className}`}
       style={customStyles.container}
     >
       <label>{label}</label>

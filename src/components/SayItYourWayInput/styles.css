@@ -4,7 +4,9 @@
 }
 label {
   display: block;
-  text-align: center;
+  text-align: left;
+  font-size: 1em;
+  color: var(--main-font-color);
 }
 select {
   padding: 0.6em 1.2em;
@@ -75,7 +77,6 @@ input.disabled {
 .siyw-select-input:hover {
   border-color: var(--hover-border-color);
 }
-
 
 .siyw-select-dropdown {
   position: absolute;
@@ -159,8 +160,8 @@ input.disabled {
 /* Outlined Variant */
 .siyw-select-outlined {
   --background-color: white;
-  --border: 1px solid rgba(0, 0, 0, 0.30);
-  --border-bottom: 1px solid rgba(0, 0, 0, 0.30);
+  --border: 1px solid rgba(0, 0, 0, 0.3);
+  --border-bottom: 1px solid rgba(0, 0, 0, 0.3);
   --border-radius: 4px;
   --hover-border-color: rgba(0, 0, 0, 0.87);
 }
