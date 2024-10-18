@@ -1,45 +1,64 @@
 import React, { useState, useEffect } from "react";
 import "./../styles.css";
-import { ArrowIcon } from "./ArrowIcon"
+import { ArrowIcon } from "./ArrowIcon";
 
 const MultiSelect = ({
-  value = [],
+  value = "",
+  selected = [],
   onChange,
   options = [],
   placeholder = "Select pronouns...",
   disabled,
   label,
-  variant = "standard", 
-  customStyles = {}, 
-  className = "", 
+  variant = "standard",
+  customStyles = {},
+  className = "",
 }) => {
-  const [selectedPronouns, setSelectedPronouns] = useState(value);
+  const [selectedPronouns, setSelectedPronouns] = useState(selected);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    setSelectedPronouns(value);
-  }, [value]);
+    setSelectedPronouns(selected);
+  }, [selected]);
 
   const isChecked = (option) => {
-    return selectedPronouns.includes(option[0]);
+    return selectedPronouns.some(
+      (item) => item.nominative === option.nominative
+    );
   };
 
   const handlePronounChange = (option) => {
+    const { nominative, accusative } = option;
+
     setSelectedPronouns((prevSelectedPronouns) => {
       let updatedPronouns;
-      const [nominative, accusative] = option;
 
-      if (prevSelectedPronouns.includes(nominative)) {
+      const isAlreadySelected = prevSelectedPronouns.some(
+        (pronoun) => pronoun.nominative === nominative
+      );
+
+      if (isAlreadySelected) {
         updatedPronouns = prevSelectedPronouns.filter(
-          (pronoun) => pronoun !== nominative && pronoun !== accusative
+          (pronoun) => pronoun.nominative !== nominative
         );
       } else {
-        updatedPronouns = [...prevSelectedPronouns, nominative, accusative];
+        updatedPronouns = [...prevSelectedPronouns, { nominative, accusative }];
       }
 
       onChange(updatedPronouns);
+
       return updatedPronouns;
     });
+  };
+
+  const pronounsLabel = () => {
+    if (selectedPronouns.length === 0) {
+      return placeholder;
+    } else if (selectedPronouns.length === 1) {
+      return `${selectedPronouns[0].nominative}/${selectedPronouns[0].accusative}`;
+    } else {
+      return selectedPronouns.map((item) => item.nominative).join("/");
+    }
   };
 
   const toggleDropdown = () => {
@@ -48,20 +67,6 @@ const MultiSelect = ({
 
   const closeDropdown = () => {
     setIsOpen(false);
-  };
-
-  const formatPronounsForDisplay = () => {
-    const selectedGroups = options.filter((option) =>
-      selectedPronouns.includes(option[0])
-    );
-
-    if (selectedGroups.length === 1) {
-      return selectedGroups[0].join("/");
-    } else if (selectedGroups.length > 1) {
-      return selectedGroups.map((group) => group[0]).join("/");
-    }
-
-    return placeholder;
   };
 
   const variantClass = `siyw-select-${variant}`;
@@ -77,32 +82,29 @@ const MultiSelect = ({
         onClick={toggleDropdown}
         style={customStyles.input}
       >
-        <span>
-          {selectedPronouns.length > 0
-            ? formatPronounsForDisplay()
-            : placeholder}
-        </span>
-        <>
-          <ArrowIcon isOpen={isOpen} />
-        </>
+        <span>{pronounsLabel()}</span>
+        <ArrowIcon isOpen={isOpen} />
       </div>
 
       {isOpen && (
         <div className="siyw-select-dropdown" style={customStyles.dropdown}>
-          {options.map((option, index) => (
+          {options.map((optionSet, index) => (
             <div
               key={index}
               className="siyw-select-option"
               style={customStyles.option}
-              onClick={() => handlePronounChange(option)}
+              onClick={() => handlePronounChange(optionSet)}
             >
               <input
                 type="checkbox"
                 id={`pronoun-${index}`}
-                checked={isChecked(option)}
+                checked={isChecked(optionSet)}
                 disabled={disabled}
+                onChange={() => handlePronounChange(optionSet)}
               />
-              <label htmlFor={`pronoun-${index}`}>{option.join(" / ")}</label>
+              <label htmlFor={`pronoun-${index}`}>
+                {`${optionSet.nominative}/${optionSet.accusative}`}
+              </label>
             </div>
           ))}
         </div>

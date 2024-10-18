@@ -3,37 +3,38 @@ import "./styles.css";
 import { pronouns } from "../../data/pronouns";
 import MultiSelect from "./components/MultiSelect";
 
-const SayItYourWayPronouns = ({
-  onChange,
-  inputComponent: InputComponent, // Custom input component
-  label,
-  placeholder = "Please select...",
-  helperText,
-  error,
-  disabled,
-  value = "", // Incoming value (e.g., "she/they")
-  customOptions,
-  variant
-}) => {
-  const [finalOptions, setFinalOptions] = useState(() => {
-    return customOptions ? customOptions : [...pronouns];
-  });
+const SayItYourWayPronouns = (props) => {
+  const {
+    onChange,
+    inputComponent: InputComponent,
+    label,
+    placeholder = "Please select...",
+    helperText,
+    error,
+    disabled,
+    value = "",
+    customOptions,
+    variant,
+  } = props;
 
+  const [optionsArray] = useState(() => {
+    return customOptions ? customOptions : pronouns;
+  });
   const [selectedPronouns, setSelectedPronouns] = useState([]);
 
-  // Split incoming value and filter to find the matching nominative and accusative pairs
+
   useEffect(() => {
     if (value) {
-      const selectedValues = value.split("/"); // Convert incoming string to array
-      const matchedPronouns = finalOptions.filter(option =>
-        selectedValues.includes(option[0]) // Find matching nominative forms
-      ).map(option => option[0]); // Keep only the nominative forms for selection
+      const selectedValues = value.split("/");
 
-      setSelectedPronouns(matchedPronouns); // Update selected pronouns with nominatives
+      const matchedPronouns = optionsArray.filter((obj) =>
+        selectedValues.includes(obj.nominative)
+      );
+
+      setSelectedPronouns(matchedPronouns.reverse());
     }
-  }, [value, finalOptions]);
+  }, [value, optionsArray]);
 
-  // Handle logic when pronouns change
   const handlePronounsChange = (newSelectedPronouns) => {
     if (!Array.isArray(newSelectedPronouns)) {
       console.error("newSelectedPronouns is not an array", newSelectedPronouns);
@@ -44,37 +45,36 @@ const SayItYourWayPronouns = ({
     onChange(finalValue); // Send formatted value back to parent
   };
 
-  // Format the final value to return based on selection logic
   const formatPronounsForReturn = (selectedPronouns) => {
-    const selectedGroups = finalOptions.filter(option =>
+    const selectedGroups = optionsArray.filter((option) =>
       selectedPronouns.includes(option[0])
     );
 
-    // Logic from flowchart
     if (selectedGroups.length === 1) {
-      // If only one group selected, show both nominative and accusative
-      return selectedGroups[0].join("/"); // e.g., "she/her"
+      return selectedGroups[0].join("/");
     } else if (selectedGroups.length > 1) {
-      // If more than one selected, show only nominatives
-      return selectedGroups.map(group => group[0]).join("/"); // e.g., "she/they"
+      const reversedSelectedGroups = selectedGroups.reverse();
+      console.log("selectedGroups!!!", reversedSelectedGroups);
+
+      return reversedSelectedGroups.map((group) => group[0]).join("/");
     }
     return "";
   };
 
   return (
     <div className={`input-container ${disabled ? "disabled" : ""}`}>
- 
-        <MultiSelect
-          className={disabled ? "disabled" : ""}
-          value={selectedPronouns} // Use the selected pronouns
-          onChange={handlePronounsChange} // Handle change from MultiSelect
-          placeholder={!value ? placeholder : undefined}
-          label={label}
-          disabled={disabled}
-          options={finalOptions}
-          variant={variant}
-        />
-  
+      <MultiSelect
+        className={disabled ? "disabled" : ""}
+        selected={selectedPronouns}
+        value={value || ""} 
+        onChange={handlePronounsChange} 
+        placeholder={!value ? placeholder : undefined}
+        label={label}
+        disabled={disabled}
+        options={optionsArray}
+        variant={variant}
+      />
+
       {!error && helperText && <p className="helper-text">{helperText}</p>}
       {error && <p className="error-text">Error: {error}</p>}
     </div>
