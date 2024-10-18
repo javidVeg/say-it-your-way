@@ -100,7 +100,6 @@ const MultiSelect = ({
                 id={`pronoun-${index}`}
                 checked={isChecked(optionSet)}
                 disabled={disabled}
-                onChange={() => handlePronounChange(optionSet)}
               />
               <label htmlFor={`pronoun-${index}`}>
                 {`${optionSet.nominative}/${optionSet.accusative}`}
