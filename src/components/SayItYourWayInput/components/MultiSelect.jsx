@@ -5,6 +5,7 @@ import { ArrowIcon } from "./ArrowIcon";
 const MultiSelect = ({
   value = "",
   selected = [],
+  setSelected,
   onChange,
   options = [],
   placeholder = "Select pronouns...",
@@ -14,59 +15,43 @@ const MultiSelect = ({
   customStyles = {},
   className = "",
 }) => {
-  const [selectedPronouns, setSelectedPronouns] = useState(selected);
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    setSelectedPronouns(selected);
-  }, [selected]);
-
   const isChecked = (option) => {
-    return selectedPronouns.some(
-      (item) => item.nominative === option.nominative
-    );
+    return selected.some((item) => item.nominative === option.nominative);
   };
 
   const handlePronounChange = (option) => {
-    const { nominative, accusative } = option;
+    const { nominative } = option;
 
-    setSelectedPronouns((prevSelectedPronouns) => {
+    setSelected(() => {
       let updatedPronouns;
 
-      const isAlreadySelected = prevSelectedPronouns.some(
+      const isAlreadySelected = selected.some(
         (pronoun) => pronoun.nominative === nominative
       );
 
       if (isAlreadySelected) {
-        updatedPronouns = prevSelectedPronouns.filter(
+        updatedPronouns = selected.filter(
           (pronoun) => pronoun.nominative !== nominative
         );
       } else {
-        updatedPronouns = [...prevSelectedPronouns, { nominative, accusative }];
+        updatedPronouns = selected.concat(option);
       }
-
+      console.log("handlePronounChange", updatedPronouns);
       onChange(updatedPronouns);
-
-      return updatedPronouns;
     });
   };
 
   const pronounsLabel = () => {
-    if (selectedPronouns.length === 0) {
+    console.log("selected in pronounsLabel", selected);
+    if (selected.length === 0) {
       return placeholder;
-    } else if (selectedPronouns.length === 1) {
-      return `${selectedPronouns[0].nominative}/${selectedPronouns[0].accusative}`;
+    } else if (selected.length === 1) {
+      return `${selected[0].nominative}/${selected[0].accusative}`;
     } else {
-      return selectedPronouns.map((item) => item.nominative).join("/");
+      return selected.map((item) => item.nominative).join("/");
     }
-  };
-
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const closeDropdown = () => {
-    setIsOpen(false);
   };
 
   return (
@@ -77,7 +62,7 @@ const MultiSelect = ({
       <label>{label}</label>
       <div
         className="siyw-select-input"
-        onClick={toggleDropdown}
+        onClick={() => setIsOpen(!isOpen)}
         style={customStyles.input}
       >
         <span>{pronounsLabel()}</span>
@@ -98,8 +83,16 @@ const MultiSelect = ({
                 id={`pronoun-${index}`}
                 checked={isChecked(optionSet)}
                 disabled={disabled}
+                readOnly
               />
-              <label htmlFor={`pronoun-${index}`}>
+              <label
+                htmlFor={`pronoun-${index}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handlePronounChange(optionSet);
+                }}
+              >
                 {`${optionSet.nominative}/${optionSet.accusative}`}
               </label>
             </div>
@@ -107,7 +100,9 @@ const MultiSelect = ({
         </div>
       )}
 
-      {isOpen && <div className="overlay" onClick={closeDropdown}></div>}
+      {isOpen && (
+        <div className="overlay" onClick={() => setIsOpen(false)}></div>
+      )}
     </div>
   );
 };

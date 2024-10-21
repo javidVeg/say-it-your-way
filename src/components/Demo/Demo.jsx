@@ -64,7 +64,7 @@ const Demo = () => {
         value={pronounsValue}
         label="Preferred Pronouns"
         placeholder="Please select your preference..."
-        helperText="Please select your preferred pronouns."
+        helperText="This information is only used to ensure respectful and accurate communication."
         customOptions={false}
         variant="outlined"
         // customStyles={{

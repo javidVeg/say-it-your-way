@@ -1,6 +1,7 @@
 :root {
   --hover-background-color: rgba(0, 0, 0, 0.04);
   --main-font-color: rgba(0, 0, 0, 0.87);
+  --helper-font-color: #646cff;
 }
 label {
   display: block;
@@ -35,9 +36,12 @@ select {
 }
 
 .helper-text {
-  color: var(--main-font-color);
-  font-size: 0.8em;
+  color: var(--helper-font-color);
+  font-weight: 600;
+  font-size: 0.6em;
   margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  text-align: left;
 }
 
 .select.disabled,
@@ -48,7 +52,6 @@ input.disabled {
   border: 1px solid #888;
 }
 
-/* Base styles for the MultiSelect component */
 .siyw-select-container {
   position: relative;
   font-family: Arial, sans-serif;

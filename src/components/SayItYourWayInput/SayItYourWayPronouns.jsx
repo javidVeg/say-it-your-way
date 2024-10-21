@@ -6,7 +6,6 @@ import MultiSelect from "./components/MultiSelect";
 const SayItYourWayPronouns = (props) => {
   const {
     onChange,
-    inputComponent: InputComponent,
     label,
     placeholder = "Please select...",
     helperText,
@@ -25,37 +24,66 @@ const SayItYourWayPronouns = (props) => {
   useEffect(() => {
     if (value) {
       const selectedValues = value.split("/");
-
-      const matchedPronouns = optionsArray.filter((obj) =>
-        selectedValues.includes(obj.nominative)
-      );
-
-      setSelectedPronouns(matchedPronouns.reverse());
+  
+      const matchedPronouns = selectedValues
+        .map((val) => optionsArray.find((obj) => obj.nominative === val))
+        .filter((obj) => obj !== undefined); 
+  
+      console.log("matchedPronouns", matchedPronouns);
+      
+      if (matchedPronouns.length > 0) { 
+        setSelectedPronouns(matchedPronouns);
+      }
     }
   }, [value, optionsArray]);
 
+  const setSelected = (newSelectedPronouns) => {
+    setSelectedPronouns(newSelectedPronouns);
+  };
+
   const handlePronounsChange = (newSelectedPronouns) => {
+    console.log("newSelectedPronouns", newSelectedPronouns);
     if (!Array.isArray(newSelectedPronouns)) {
       console.error("newSelectedPronouns is not an array", newSelectedPronouns);
       return;
     }
 
     const finalValue = formatPronounsForReturn(newSelectedPronouns);
-    onChange(finalValue); // Send formatted value back to parent
+
+    console.log("finalValue", finalValue);
+    onChange(finalValue);
   };
+
+  // const formatPronounsForReturn = (selectedPronouns) => {
+  //   const selectedGroups = optionsArray.filter((option) =>
+  //     selectedPronouns.includes(option[0])
+  //   );
+
+  //   if (selectedGroups.length === 1) {
+  //     return selectedGroups[0].join("/");
+  //   } else if (selectedGroups.length > 1) {
+  //     const reversedSelectedGroups = selectedGroups.reverse();
+
+  //     return reversedSelectedGroups.map((group) => group[0]).join("/");
+  //   }
+  //   return "";
+  // };
 
   const formatPronounsForReturn = (selectedPronouns) => {
     const selectedGroups = optionsArray.filter((option) =>
-      selectedPronouns.includes(option[0])
+      selectedPronouns.some(
+        (selected) => selected.nominative === option.nominative
+      )
     );
 
     if (selectedGroups.length === 1) {
-      return selectedGroups[0].join("/");
-    } else if (selectedGroups.length > 1) {
-      const reversedSelectedGroups = selectedGroups.reverse();
-
-      return reversedSelectedGroups.map((group) => group[0]).join("/");
+      return `${selectedGroups[0].nominative}/${selectedGroups[0].accusative}`;
     }
+    else if (selectedGroups.length > 1) {
+      const reversedSelectedGroups = selectedGroups.reverse();
+      return selectedGroups.map((group) => group.nominative).join("/");
+    }
+
     return "";
   };
 
@@ -64,6 +92,7 @@ const SayItYourWayPronouns = (props) => {
       <MultiSelect
         className={disabled ? "disabled" : ""}
         selected={selectedPronouns}
+        setSelected={setSelected}
         value={value || ""}
         onChange={handlePronounsChange}
         placeholder={!value ? placeholder : undefined}
