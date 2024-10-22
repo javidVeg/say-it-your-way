@@ -14,7 +14,7 @@ import Checkbox from "@mui/material/Checkbox";
 
 const Demo = () => {
   const [genderValue, setGenderValue] = useState("");
-  const [pronounsValue, setPronounsValue] = useState("");
+  const [pronounsValue, setPronounsValue] = useState("she/they");
 
   const onGenderChange = (item) => {
     console.log("genderValue::", item);
@@ -66,6 +66,8 @@ const Demo = () => {
         helperText="This information is only used to ensure respectful and accurate communication."
         customOptions={false}
         variant="outlined"
+        arrowUp={null}
+        arrowDown={null}
         // customStyles={{
         //     container: {
         //       marginBottom: "1.5rem",

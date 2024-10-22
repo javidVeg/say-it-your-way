@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import "./styles.css";
 import { pronouns } from "../../data/pronouns";
 import MultiSelect from "./components/MultiSelect";
+import "./styles.css";
 
 const SayItYourWayPronouns = (props) => {
   const {
@@ -13,6 +13,8 @@ const SayItYourWayPronouns = (props) => {
     disabled,
     value = "",
     customOptions,
+    arrowUp,
+    arrowDown
   } = props;
 
   const [optionsArray] = useState(() => {
@@ -24,17 +26,17 @@ const SayItYourWayPronouns = (props) => {
   useEffect(() => {
     if (value) {
       const selectedValues = value.split("/");
-  
+
       const matchedPronouns = selectedValues
         .map((val) => optionsArray.find((obj) => obj.nominative === val))
         .filter((obj) => obj !== undefined);
-  
+
       // Remove duplicates by checking IDs
       const uniquePronouns = matchedPronouns.filter(
         (pronoun, index, self) =>
           index === self.findIndex((p) => p.id === pronoun.id)
       );
-  
+
       if (uniquePronouns.length > 0) {
         setSelectedPronouns(uniquePronouns);
       }
@@ -47,15 +49,13 @@ const SayItYourWayPronouns = (props) => {
     onChange(finalValue);
   }, [selectedPronouns]);
 
-
-
   const handlePronounChange = (option) => {
     setSelectedPronouns((prevSelected) => {
       // Check if the option is already in the selected pronouns array
       const isAlreadySelected = prevSelected.some(
         (pronoun) => pronoun.id === option.id
       );
-  
+
       if (isAlreadySelected) {
         return prevSelected.filter((pronoun) => pronoun.id !== option.id); // Removes duplicates
       } else {
@@ -63,7 +63,6 @@ const SayItYourWayPronouns = (props) => {
       }
     });
   };
-
 
   const formatPronounsForReturn = (selectedGroups) => {
     if (selectedGroups.length === 0) {
@@ -93,6 +92,8 @@ const SayItYourWayPronouns = (props) => {
         options={optionsArray}
         handlePronounChange={handlePronounChange}
         isChecked={isChecked}
+        arrowUp={arrowUp}
+        arrowDown={arrowDown}
       />
 
       {!error && helperText && <p className="helper-text">{helperText}</p>}

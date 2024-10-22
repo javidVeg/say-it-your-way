@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "./../styles.css";
 import { ArrowIcon } from "./ArrowIcon";
 
 const MultiSelect = (props) => {
@@ -13,6 +12,8 @@ const MultiSelect = (props) => {
     className = "",
     handlePronounChange,
     isChecked,
+    arrowUp,
+    arrowDown,
   } = props;
 
   const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +31,7 @@ const MultiSelect = (props) => {
           style={customStyles.input}
         >
           <span>{value || placeholder}</span>
-          <ArrowIcon isOpen={isOpen} />
+          <ArrowIcon isOpen={isOpen} arrowUp={arrowUp} arrowDown={arrowDown} />
         </div>
 
         {isOpen && (
