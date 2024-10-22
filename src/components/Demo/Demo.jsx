@@ -21,7 +21,6 @@ const Demo = () => {
     setGenderValue(item);
   };
   const onPronounsChange = (item) => {
-    console.log("pronounsValue::", item);
     setPronounsValue(item);
   };
 

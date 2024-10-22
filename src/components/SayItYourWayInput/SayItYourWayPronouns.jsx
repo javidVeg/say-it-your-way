@@ -13,7 +13,6 @@ const SayItYourWayPronouns = (props) => {
     disabled,
     value = "",
     customOptions,
-    variant,
   } = props;
 
   const [optionsArray] = useState(() => {
@@ -28,13 +27,21 @@ const SayItYourWayPronouns = (props) => {
 
       const matchedPronouns = selectedValues
         .map((val) => optionsArray.find((obj) => obj.nominative === val))
-        .filter((obj) => obj !== undefined); // Skip undefined values
+        .filter((obj) => obj !== undefined);
 
       if (matchedPronouns.length > 0) {
         setSelectedPronouns(matchedPronouns);
       }
     }
   }, [value, optionsArray]);
+  
+
+  useEffect(() => {
+    const finalValue = formatPronounsForReturn(selectedPronouns);
+
+    onChange(finalValue);
+  }, [selectedPronouns]);
+
 
   const handlePronounChange = (option) => {
     const { nominative } = option;
@@ -53,29 +60,21 @@ const SayItYourWayPronouns = (props) => {
       } else {
         updatedPronouns = [...prevSelected, option];
       }
-      console.log("updatedPronouns", updatedPronouns);
-
-      const finalValue = formatPronounsForReturn(updatedPronouns);
-      onChange(finalValue);
 
       return updatedPronouns;
     });
   };
 
-  const formatPronounsForReturn = (selectedPronouns) => {
-    const selectedGroups = optionsArray.filter((option) =>
-      selectedPronouns.some(
-        (selected) => selected.nominative === option.nominative
-      )
-    );
-
-    if (selectedGroups.length === 1) {
-      return `${selectedGroups[0].nominative}/${selectedGroups[0].accusative}`;
-    } else if (selectedGroups.length > 1) {
-      return selectedGroups.map((group) => group.nominative).join("/");
+  const formatPronounsForReturn = (selectedGroups) => {
+    if (selectedGroups.length === 0) {
+      return "";
     }
 
-    return "";
+    if (selectedGroups.length > 1) {
+      return selectedGroups.map((group) => group.nominative).join("/");
+    } else {
+      return `${selectedGroups[0].nominative}/${selectedGroups[0].accusative}`;
+    }
   };
 
   const isChecked = (option) => {
@@ -88,15 +87,12 @@ const SayItYourWayPronouns = (props) => {
     <>
       <MultiSelect
         className={disabled ? "disabled" : ""}
-        selected={selectedPronouns}
-        setSelected={setSelectedPronouns}
         value={value || ""}
         onChange={handlePronounChange}
         placeholder={!value ? placeholder : undefined}
         label={label}
         disabled={disabled}
         options={optionsArray}
-        variant={variant}
         handlePronounChange={handlePronounChange}
         isChecked={isChecked}
       />
