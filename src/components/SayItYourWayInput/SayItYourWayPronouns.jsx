@@ -24,17 +24,22 @@ const SayItYourWayPronouns = (props) => {
   useEffect(() => {
     if (value) {
       const selectedValues = value.split("/");
-
+  
       const matchedPronouns = selectedValues
         .map((val) => optionsArray.find((obj) => obj.nominative === val))
         .filter((obj) => obj !== undefined);
-
-      if (matchedPronouns.length > 0) {
-        setSelectedPronouns(matchedPronouns);
+  
+      // Remove duplicates by checking IDs
+      const uniquePronouns = matchedPronouns.filter(
+        (pronoun, index, self) =>
+          index === self.findIndex((p) => p.id === pronoun.id)
+      );
+  
+      if (uniquePronouns.length > 0) {
+        setSelectedPronouns(uniquePronouns);
       }
     }
   }, [value, optionsArray]);
-  
 
   useEffect(() => {
     const finalValue = formatPronounsForReturn(selectedPronouns);
@@ -43,27 +48,22 @@ const SayItYourWayPronouns = (props) => {
   }, [selectedPronouns]);
 
 
+
   const handlePronounChange = (option) => {
-    const { nominative } = option;
-
     setSelectedPronouns((prevSelected) => {
-      let updatedPronouns;
-
+      // Check if the option is already in the selected pronouns array
       const isAlreadySelected = prevSelected.some(
-        (pronoun) => pronoun.nominative === nominative
+        (pronoun) => pronoun.id === option.id
       );
-
+  
       if (isAlreadySelected) {
-        updatedPronouns = prevSelected.filter(
-          (pronoun) => pronoun.nominative !== nominative
-        );
+        return prevSelected.filter((pronoun) => pronoun.id !== option.id); // Removes duplicates
       } else {
-        updatedPronouns = [...prevSelected, option];
+        return [...prevSelected, option];
       }
-
-      return updatedPronouns;
     });
   };
+
 
   const formatPronounsForReturn = (selectedGroups) => {
     if (selectedGroups.length === 0) {
@@ -78,9 +78,7 @@ const SayItYourWayPronouns = (props) => {
   };
 
   const isChecked = (option) => {
-    return selectedPronouns.some(
-      (item) => item.nominative === option.nominative
-    );
+    return selectedPronouns.some((item) => item.id === option.id);
   };
 
   return (
