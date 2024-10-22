@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./styles.css";
 import { pronouns } from "../../data/pronouns";
 import MultiSelect from "./components/MultiSelect";
@@ -19,55 +19,48 @@ const SayItYourWayPronouns = (props) => {
   const [optionsArray] = useState(() => {
     return customOptions ? customOptions : pronouns;
   });
+
   const [selectedPronouns, setSelectedPronouns] = useState([]);
 
   useEffect(() => {
     if (value) {
       const selectedValues = value.split("/");
-  
+
       const matchedPronouns = selectedValues
         .map((val) => optionsArray.find((obj) => obj.nominative === val))
-        .filter((obj) => obj !== undefined); 
-  
-      console.log("matchedPronouns", matchedPronouns);
-      
-      if (matchedPronouns.length > 0) { 
+        .filter((obj) => obj !== undefined); // Skip undefined values
+
+      if (matchedPronouns.length > 0) {
         setSelectedPronouns(matchedPronouns);
       }
     }
   }, [value, optionsArray]);
 
-  const setSelected = (newSelectedPronouns) => {
-    setSelectedPronouns(newSelectedPronouns);
+  const handlePronounChange = (option) => {
+    const { nominative } = option;
+
+    setSelectedPronouns((prevSelected) => {
+      let updatedPronouns;
+
+      const isAlreadySelected = prevSelected.some(
+        (pronoun) => pronoun.nominative === nominative
+      );
+
+      if (isAlreadySelected) {
+        updatedPronouns = prevSelected.filter(
+          (pronoun) => pronoun.nominative !== nominative
+        );
+      } else {
+        updatedPronouns = [...prevSelected, option];
+      }
+      console.log("updatedPronouns", updatedPronouns);
+
+      const finalValue = formatPronounsForReturn(updatedPronouns);
+      onChange(finalValue);
+
+      return updatedPronouns;
+    });
   };
-
-  const handlePronounsChange = (newSelectedPronouns) => {
-    console.log("newSelectedPronouns", newSelectedPronouns);
-    if (!Array.isArray(newSelectedPronouns)) {
-      console.error("newSelectedPronouns is not an array", newSelectedPronouns);
-      return;
-    }
-
-    const finalValue = formatPronounsForReturn(newSelectedPronouns);
-
-    console.log("finalValue", finalValue);
-    onChange(finalValue);
-  };
-
-  // const formatPronounsForReturn = (selectedPronouns) => {
-  //   const selectedGroups = optionsArray.filter((option) =>
-  //     selectedPronouns.includes(option[0])
-  //   );
-
-  //   if (selectedGroups.length === 1) {
-  //     return selectedGroups[0].join("/");
-  //   } else if (selectedGroups.length > 1) {
-  //     const reversedSelectedGroups = selectedGroups.reverse();
-
-  //     return reversedSelectedGroups.map((group) => group[0]).join("/");
-  //   }
-  //   return "";
-  // };
 
   const formatPronounsForReturn = (selectedPronouns) => {
     const selectedGroups = optionsArray.filter((option) =>
@@ -78,33 +71,39 @@ const SayItYourWayPronouns = (props) => {
 
     if (selectedGroups.length === 1) {
       return `${selectedGroups[0].nominative}/${selectedGroups[0].accusative}`;
-    }
-    else if (selectedGroups.length > 1) {
-      const reversedSelectedGroups = selectedGroups.reverse();
+    } else if (selectedGroups.length > 1) {
       return selectedGroups.map((group) => group.nominative).join("/");
     }
 
     return "";
   };
 
+  const isChecked = (option) => {
+    return selectedPronouns.some(
+      (item) => item.nominative === option.nominative
+    );
+  };
+
   return (
-    <div className={`input-container ${disabled ? "disabled" : ""}`}>
+    <>
       <MultiSelect
         className={disabled ? "disabled" : ""}
         selected={selectedPronouns}
-        setSelected={setSelected}
+        setSelected={setSelectedPronouns}
         value={value || ""}
-        onChange={handlePronounsChange}
+        onChange={handlePronounChange}
         placeholder={!value ? placeholder : undefined}
         label={label}
         disabled={disabled}
         options={optionsArray}
         variant={variant}
+        handlePronounChange={handlePronounChange}
+        isChecked={isChecked}
       />
 
       {!error && helperText && <p className="helper-text">{helperText}</p>}
       {error && <p className="error-text">Error: {error}</p>}
-    </div>
+    </>
   );
 };
 

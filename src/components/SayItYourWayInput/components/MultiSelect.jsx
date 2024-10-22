@@ -2,59 +2,23 @@ import React, { useState, useEffect } from "react";
 import "./../styles.css";
 import { ArrowIcon } from "./ArrowIcon";
 
-const MultiSelect = ({
-  value = "",
-  selected = [],
-  setSelected,
-  onChange,
-  options = [],
-  placeholder = "Select pronouns...",
-  disabled,
-  label,
-  variant = "standard",
-  customStyles = {},
-  className = "",
-}) => {
+const MultiSelect = (props) => {
+  const {
+    value = "",
+    options = [],
+    placeholder,
+    disabled,
+    label,
+    customStyles = {},
+    className = "",
+    handlePronounChange,
+    isChecked,
+  } = props;
+
   const [isOpen, setIsOpen] = useState(false);
 
-  const isChecked = (option) => {
-    return selected.some((item) => item.nominative === option.nominative);
-  };
-
-  const handlePronounChange = (option) => {
-    const { nominative } = option;
-
-    setSelected(() => {
-      let updatedPronouns;
-
-      const isAlreadySelected = selected.some(
-        (pronoun) => pronoun.nominative === nominative
-      );
-
-      if (isAlreadySelected) {
-        updatedPronouns = selected.filter(
-          (pronoun) => pronoun.nominative !== nominative
-        );
-      } else {
-        updatedPronouns = selected.concat(option);
-      }
-      console.log("handlePronounChange", updatedPronouns);
-      onChange(updatedPronouns);
-    });
-  };
-
-  const pronounsLabel = () => {
-    console.log("selected in pronounsLabel", selected);
-    if (selected.length === 0) {
-      return placeholder;
-    } else if (selected.length === 1) {
-      return `${selected[0].nominative}/${selected[0].accusative}`;
-    } else {
-      return selected.map((item) => item.nominative).join("/");
-    }
-  };
-
   return (
+    <div className={`input-container ${disabled ? "disabled" : ""}`}>
     <div
       className={`siyw-select-container siyw-select-standard ${className}`}
       style={customStyles.container}
@@ -65,7 +29,7 @@ const MultiSelect = ({
         onClick={() => setIsOpen(!isOpen)}
         style={customStyles.input}
       >
-        <span>{pronounsLabel()}</span>
+        <span>{value || placeholder}</span>
         <ArrowIcon isOpen={isOpen} />
       </div>
 
@@ -103,6 +67,7 @@ const MultiSelect = ({
       {isOpen && (
         <div className="overlay" onClick={() => setIsOpen(false)}></div>
       )}
+    </div>
     </div>
   );
 };

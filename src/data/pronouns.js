@@ -3,7 +3,6 @@ export const pronouns = [
   { nominative: "she", accusative: "her" },
   { nominative: "he", accusative: "him" },
   { nominative: "xe", accusative: "xem" },
-  { nominative: "ze", accusative: "hir" },
   { nominative: "ey", accusative: "em" },
   { nominative: "ve", accusative: "ver" },
   { nominative: "fae", accusative: "faer" },
