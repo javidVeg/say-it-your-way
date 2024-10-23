@@ -1,7 +1,8 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import SayItYourWayPronouns from "../SayItYourWayPronouns"
-import { pronouns } from "../../../data/pronouns"
+import SayItYourWayPronouns from "../SayItYourWayPronouns";
+import { pronouns } from "../../../data/pronouns";
+import "@testing-library/jest-dom";
 
 describe("SayItYourWayPronouns Component", () => {
   const mockOnChange = jest.fn();
@@ -12,6 +13,7 @@ describe("SayItYourWayPronouns Component", () => {
       label: "Preferred Pronouns",
       value: "",
       customOptions: pronouns,
+      placeholder: "Select Pronouns",
       ...props,
     };
 
@@ -21,7 +23,12 @@ describe("SayItYourWayPronouns Component", () => {
   it("renders correctly with the default options", () => {
     setup();
 
-    expect(screen.getByText("Preferred Pronouns")).toBeInTheDocument();
+    expect(screen.getByText("Preferred Pronouns")).toBeInTheDocument(); // checks if the label is rendered
+
+    const triggerDiv = screen.getByText("Select Pronouns"); // checks if the trigger div is rendered
+    fireEvent.click(triggerDiv); // opens the dropdown
+
+    // checks if each pronoun is rendered
     pronouns.forEach((pronoun) => {
       expect(
         screen.getByLabelText(`${pronoun.nominative}/${pronoun.accusative}`)
@@ -29,50 +36,59 @@ describe("SayItYourWayPronouns Component", () => {
     });
   });
 
-  // it("allows selecting a pronoun and calls onChange", () => {
-  //   setup();
+  it("allows selecting a pronoun and calls onChange", () => {
+    setup();
 
-  //   const pronounOption = screen.getByLabelText("they/them");
-  //   fireEvent.click(pronounOption);
+    const triggerDiv = screen.getByText("Select Pronouns");
+    fireEvent.click(triggerDiv);
 
-  //   expect(pronounOption.checked).toBe(true);
-  //   expect(mockOnChange).toHaveBeenCalledWith("they/them");
-  // });
+    const pronounOption = screen.getByLabelText("they/them");
+    fireEvent.click(pronounOption);
 
-  // it("allows selecting multiple pronouns and formats the return value", () => {
-  //   setup();
+    expect(pronounOption.checked).toBe(true);
+    expect(mockOnChange).toHaveBeenCalledWith("they/them");
+  });
 
-  //   const theyOption = screen.getByLabelText("they/them");
-  //   const xeOption = screen.getByLabelText("xe/xem");
+  it("allows selecting multiple pronouns and formats the return value", () => {
+    setup();
 
-  //   fireEvent.click(theyOption);
-  //   fireEvent.click(xeOption);
+    const triggerDiv = screen.getByText("Select Pronouns");
+    fireEvent.click(triggerDiv);
 
-  //   expect(theyOption.checked).toBe(true);
-  //   expect(xeOption.checked).toBe(true);
-  //   expect(mockOnChange).toHaveBeenCalledWith("they/xe");
-  // });
+    const theyOption = screen.getByLabelText("they/them");
+    const xeOption = screen.getByLabelText("xe/xem");
+   
+    fireEvent.click(theyOption);
+    fireEvent.click(xeOption);
 
-  // it("handles deselecting a pronoun", () => {
-  //   setup();
+    expect(theyOption.checked).toBe(true);
+    expect(xeOption.checked).toBe(true);
+    expect(mockOnChange).toHaveBeenCalledWith("they/xe");
+  });
 
-  //   const theyOption = screen.getByLabelText("they/them");
-  //   fireEvent.click(theyOption); // Select "they/them"
-  //   fireEvent.click(theyOption); // Deselect "they/them"
+  it("handles deselecting a pronoun", () => {
+    setup();
 
-  //   expect(theyOption.checked).toBe(false);
-  //   expect(mockOnChange).toHaveBeenCalledWith("");
-  // });
+    const triggerDiv = screen.getByText("Select Pronouns");
+    fireEvent.click(triggerDiv);
 
-  // it("renders helper text when provided", () => {
-  //   setup({ helperText: "This is some helper text" });
+    const theyOption = screen.getByLabelText("they/them");
+    fireEvent.click(theyOption); // Selects "they/them"
+    fireEvent.click(theyOption); // Deselects "they/them"
 
-  //   expect(screen.getByText("This is some helper text")).toBeInTheDocument();
-  // });
+    expect(theyOption.checked).toBe(false);
+    expect(mockOnChange).toHaveBeenCalledWith("");
+  });
 
-  // it("renders error text when error prop is provided", () => {
-  //   setup({ error: "There is an error" });
+  it("renders helper text when provided", () => {
+    setup({ helperText: "This is some testing helper text" });
 
-  //   expect(screen.getByText("Error: There is an error")).toBeInTheDocument();
-  // });
+    expect(screen.getByText("This is some testing helper text")).toBeInTheDocument();
+  });
+
+  it("renders error text when error prop is provided", () => {
+    setup({ error: "There is a testing error" });
+
+    expect(screen.getByText("Error: There is a testing error")).toBeInTheDocument();
+  });
 });
