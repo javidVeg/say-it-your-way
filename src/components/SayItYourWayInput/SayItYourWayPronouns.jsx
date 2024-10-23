@@ -14,7 +14,8 @@ const SayItYourWayPronouns = (props) => {
     value = "",
     customOptions,
     arrowUp,
-    arrowDown
+    arrowDown,
+    required,
   } = props;
 
   const [optionsArray] = useState(() => {
@@ -45,8 +46,9 @@ const SayItYourWayPronouns = (props) => {
 
   useEffect(() => {
     const finalValue = formatPronounsForReturn(selectedPronouns);
-
-    onChange(finalValue);
+    if (onChange) {
+      onChange(finalValue);
+    }
   }, [selectedPronouns]);
 
   const handlePronounChange = (option) => {
@@ -80,6 +82,16 @@ const SayItYourWayPronouns = (props) => {
     return selectedPronouns.some((item) => item.id === option.id);
   };
 
+  const bottomHelperText = () => {
+    if (required && error) {
+      return (<p className="error-text">{error}</p>);
+    } else if (helperText) {
+      return (<p className="helper-text">{helperText}</p>);
+    } else {
+      return (<p className="helper-text">{helperText}</p>);
+    }
+  }
+
   return (
     <>
       <MultiSelect
@@ -94,10 +106,11 @@ const SayItYourWayPronouns = (props) => {
         isChecked={isChecked}
         arrowUp={arrowUp}
         arrowDown={arrowDown}
+        required={required}
       />
 
-      {!error && helperText && <p className="helper-text">{helperText}</p>}
-      {error && <p className="error-text">Error: {error}</p>}
+      {bottomHelperText()} 
+   
     </>
   );
 };

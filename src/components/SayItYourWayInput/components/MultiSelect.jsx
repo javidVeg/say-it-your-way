@@ -14,6 +14,7 @@ const MultiSelect = (props) => {
     isChecked,
     arrowUp,
     arrowDown,
+    required
   } = props;
 
   const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +31,7 @@ const MultiSelect = (props) => {
           onClick={() => setIsOpen(!isOpen)}
           style={customStyles.input}
         >
-          <span>{value || placeholder}</span>
+          <span >{value || placeholder}</span>
           <ArrowIcon isOpen={isOpen} arrowUp={arrowUp} arrowDown={arrowDown} />
         </div>
 
