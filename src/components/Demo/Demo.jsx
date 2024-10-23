@@ -14,7 +14,7 @@ import Checkbox from "@mui/material/Checkbox";
 
 const Demo = () => {
   const [genderValue, setGenderValue] = useState("");
-  const [pronounsValue, setPronounsValue] = useState("she/they");
+  const [pronounsValue, setPronounsValue] = useState("");
 
   const onGenderChange = (item) => {
     console.log("genderValue::", item);
