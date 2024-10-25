@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from "react";
-import "./styles.css";
-import { genderIdentities } from "../../data/identity";
-import SelectInput from "./components/SelectInput";
+import "./siyw-gender-styles.css";
+import { genderIdentities } from "../../../data/identity";
+import SelectInput from "../components/SelectInput";
 
-const SayItYourWayGenderId = ({
+const SIYWGenderId = ({
   onChange,
   inputComponent: InputComponent,
   label,
@@ -34,16 +34,6 @@ const SayItYourWayGenderId = ({
 
   return (
     <div className={`input-container ${disabled ? "disabled" : ""}`}>
-      {InputComponent ? (
-        <InputComponent
-          value={value || ""}
-          onChange={handleSelectChange}
-          disabled={disabled}
-          options={finalOptions}
-          placeholder={placeholder}
-          label={label}
-        />
-      ) : (
         <SelectInput
           value={value || ""}
           onChange={handleSelectChange}
@@ -52,11 +42,11 @@ const SayItYourWayGenderId = ({
           placeholder={placeholder}
           label={label}
         />
-      )}
+     
       {!error && helperText && <p className="helper-text">{helperText}</p>}
       {error && <p className="error-text">Error: {error}</p>}
     </div>
   );
 };
 
-export default SayItYourWayGenderId;
+export default SIYWGenderId;

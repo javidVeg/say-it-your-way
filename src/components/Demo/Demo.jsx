@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import SayItYourWayGenderId from "../SayItYourWayInput/SayItYourWayGenderId";
-import SayItYourWayPronouns from "../SayItYourWayInput/SayItYourWayPronouns";
+import SIYWGenderId from "../SayItYourWayInput/SIYWGenderId/SIYWGenderId";
+import SIYWPronouns from "../SayItYourWayInput/SIYWPronouns/SIYWPronouns";
 import "./demo-styles.css";
 import MuiSelect from "./MuiSelect";
 import MuiMultiSelect from "./MuiMultiSelect";
@@ -27,7 +27,7 @@ const Demo = () => {
   return (
     <div className="main-container">
       {/* Gender selection */}
-      {/* <SayItYourWayGenderId
+      <SIYWGenderId
         key="gender"
         selectionType="select"
         onChange={onGenderChange}
@@ -38,7 +38,7 @@ const Demo = () => {
         customOptions={false}
         // error='Please select an option'
         // disabled
-      /> */}
+      />
 
       {/* Gender selection w/ custom component */}
       {/* <SayItYourWayGenderId
@@ -56,7 +56,7 @@ const Demo = () => {
       /> */}
 
       {/* Pronoun selection */}
-      <SayItYourWayPronouns
+      <SIYWPronouns
         key="pronouns"
         selectionType="multi-select"
         onChange={onPronounsChange}

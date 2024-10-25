@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { ArrowIcon } from "./ArrowIcon";
 
 const MultiSelect = (props) => {
@@ -14,15 +14,13 @@ const MultiSelect = (props) => {
     isChecked,
     arrowUp,
     arrowDown,
-    required
   } = props;
 
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className={`input-container ${disabled ? "disabled" : ""}`}>
       <div
-        className={`siyw-select-container siyw-select-standard ${className}`}
+        className={`siyw-container ${className}`}
         style={customStyles.container}
       >
         <label>{label}</label>
@@ -70,7 +68,6 @@ const MultiSelect = (props) => {
           <div className="overlay" onClick={() => setIsOpen(false)}></div>
         )}
       </div>
-    </div>
   );
 };
 

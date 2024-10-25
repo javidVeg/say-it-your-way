@@ -1,26 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { pronouns } from "../../data/pronouns";
-import MultiSelect from "./components/MultiSelect";
-import "./styles.css";
+import { pronouns } from "../../../data/pronouns";
+import MultiSelect from "../components/MultiSelect";
+import "./siyw-pronouns-styles.css";
 
-const SayItYourWayPronouns = (props) => {
+const SIYWPronouns = (props) => {
   const {
     onChange,
-    label,
     placeholder = "Please select...",
     helperText,
-    error,
+    errorText,
     disabled,
     value = "",
     customOptions,
-    arrowUp,
-    arrowDown,
     required,
   } = props;
 
-  const [optionsArray] = useState(() => {
-    return customOptions ? customOptions : pronouns;
-  });
+  const [optionsArray] = useState(customOptions || pronouns);
 
   const [selectedPronouns, setSelectedPronouns] = useState([]);
 
@@ -82,37 +77,29 @@ const SayItYourWayPronouns = (props) => {
     return selectedPronouns.some((item) => item.id === option.id);
   };
 
-  const bottomHelperText = () => {
-    if (required && error) {
-      return (<p className="error-text">{error}</p>);
-    } else if (helperText) {
-      return (<p className="helper-text">{helperText}</p>);
-    } else {
-      return (<p className="helper-text">{helperText}</p>);
-    }
-  }
+  const bottomHelperText = () => (
+    required && errorText ? (
+      <p className="error-text">{errorText}</p>
+    ) : helperText ? (
+      <p className="helper-text">{helperText}</p>
+    ) : null
+  );
 
   return (
     <>
       <MultiSelect
         className={disabled ? "disabled" : ""}
         value={value || ""}
-        onChange={handlePronounChange}
         placeholder={!value ? placeholder : undefined}
-        label={label}
-        disabled={disabled}
         options={optionsArray}
-        handlePronounChange={handlePronounChange}
         isChecked={isChecked}
-        arrowUp={arrowUp}
-        arrowDown={arrowDown}
-        required={required}
+        handlePronounChange={handlePronounChange}
+        {...props}
       />
 
-      {bottomHelperText()} 
-   
+      {bottomHelperText()}
     </>
   );
 };
 
-export default SayItYourWayPronouns;
+export default SIYWPronouns;
