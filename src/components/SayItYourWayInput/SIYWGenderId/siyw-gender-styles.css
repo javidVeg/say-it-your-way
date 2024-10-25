@@ -11,10 +11,19 @@
 
 
 .siyw-select-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  position: relative;
   width: 100%;
+}
+
+.siyw-select-container::after {
+  content: "▼"; 
+  position: absolute;
+  right: 0.8em; 
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 0.8em; 
 }
 
 .siyw-select {
@@ -28,21 +37,9 @@
   transition: border-color 0.25s;
   color: var(--main-font-color);
   width: 100%;
-  position: relative;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-}
-
-.siyw-select::after {
-  content: "▼"; 
-  position: absolute;
-  right: 0.8em; 
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  color: rgba(0, 0, 0, 0.54);
-  font-size: 0.8em; 
 }
 
 .error-text {
