@@ -1,35 +1,42 @@
 import React, { useState } from "react";
 
 const SelectInput = (props) => {
-    const { value, onChange, options, placeholder, disabled } = props;
-    const [originalValue] = useState(value);
+  const {
+    value,
+    onChange,
+    options,
+    placeholder = "Select an option",
+    disabled = false,
+    className = "",
+    style = {},
+    renderOption,
+    placeholderProps = {},
+    optionProps = {},
+    onFocus,
+    onBlur,
+  } = props;
 
-    const valueExists = options.some(option => option.value === originalValue);
-    
-    return (
-      <div className="siyw-select-container">
-        <select
-          value={value || ""}
-          onChange={onChange}
-          disabled={disabled}
-          className="siyw-select"
-        >
-          <option value="" disabled>
-            {placeholder}
-          </option>
-          
-          {options.map((option, index) => (
-            <option key={index} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-          
-          {!valueExists && originalValue && (
-            <option value={originalValue}>{originalValue}</option>
-          )}
-        </select>
-      </div>
-    );
+  return (
+    <select
+      value={value || ""}
+      onChange={onChange}
+      disabled={disabled}
+      className={`siyw-select ${className}`}
+      style={style}
+      onFocus={onFocus}
+      onBlur={onBlur}
+    >
+      <option value="" disabled {...placeholderProps}>
+        {placeholder}
+      </option>
+
+      {options.map((option, index) => (
+        <option key={index} value={option.value} {...optionProps}>
+          {renderOption ? renderOption(option) : option.label}
+        </option>
+      ))}
+    </select>
+  );
 };
 
 export default SelectInput;

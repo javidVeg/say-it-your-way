@@ -9,23 +9,6 @@
   --input-padding: 0.6em 1.2em;
 }
 
-
-.siyw-select-container {
-  position: relative;
-  width: 100%;
-}
-
-.siyw-select-container::after {
-  content: "▼"; 
-  position: absolute;
-  right: 0.8em; 
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  color: rgba(0, 0, 0, 0.54);
-  font-size: 0.8em; 
-}
-
 .siyw-select {
   padding: var(--input-padding); 
   font-size: 1em;
@@ -37,12 +20,9 @@
   transition: border-color 0.25s;
   color: var(--main-font-color);
   width: 100%;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
 }
 
-.error-text {
+.siyw-error-text {
   color: red;
   font-weight: 600;
   font-size: 0.7em;
@@ -51,7 +31,7 @@
   text-align: left;
 }
 
-.helper-text {
+.siyw-helper-text {
   color: var(--helper-font-color);
   font-weight: 600;
   font-size: 0.7em;
@@ -59,6 +39,3 @@
   margin-bottom: 0.5em;
   text-align: left;
 }
-
-
-
