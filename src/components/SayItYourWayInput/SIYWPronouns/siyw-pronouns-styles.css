@@ -150,3 +150,20 @@ input.disabled {
   z-index: 0;
 }
 
+.siyw-container.siyw-disabled {
+  pointer-events: none; 
+}
+
+.siyw-disabled-label {
+  color: grey;
+}
+
+.siyw-disabled-input {
+  color: grey;
+  cursor: not-allowed;
+}
+
+.siyw-select-option input:disabled + label {
+  color: grey;
+}
+

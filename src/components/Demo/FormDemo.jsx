@@ -3,7 +3,7 @@ import SIYWPronouns from "../SayItYourWayInput/SIYWPronouns/SIYWPronouns";
 import SIYWGenderId from "../SayItYourWayInput/SIYWGenderId/SIYWGenderId";
 
 const FormDemo = () => {
-  const [pronounsValue, setPronounsValue] = useState("they/them");
+  const [pronounsValue, setPronounsValue] = useState("");
   const [genderValue, setGenderValue] = useState("");
   const [pronounError, setPronounError] = useState("");
   const [genderError, setGenderError] = useState("");
@@ -50,7 +50,7 @@ const FormDemo = () => {
         // label="Gender Identity"
         onChange={onGenderChange}
         value={genderValue}
-        helperText="Please select your gender identity."
+        // helperText="This information is only used to ensure respectful and accurate communication."
         customOptions={false}
         required
         errorText={genderError}
@@ -62,8 +62,7 @@ const FormDemo = () => {
         onChange={onPronounsChange}
         value={pronounsValue}
         // label="Preferred Pronouns"
-        placeholder="Please select your preference..."
-        helperText="This information is only used to ensure respectful and accurate communication."
+        // helperText="This information is only used to ensure respectful and accurate communication."
         errorText={pronounError}
         required
         disabled

@@ -55,7 +55,7 @@ const SIYWGenderId = (props) => {
     onChange,
     label,
     placeholder = "Please select a gender identity...",
-    helperText,
+    helperText = "This information is only used to ensure respectful and accurate communication.",
     errorText,
     required,
     disabled = false,

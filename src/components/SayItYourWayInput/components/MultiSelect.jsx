@@ -17,19 +17,20 @@ const MultiSelect = (props) => {
 
   return (
       <div
-        className={`siyw-container`}
+        className={`siyw-container ${disabled ? "siyw-disabled" : ""} ${className}`}
         style={customStyles.container}
       >
-        {label && <label>{label}</label>}
+        {label && <label className={disabled ? "siyw-disabled-label" : ""}>{label}</label>}
+        
         <div
-          className="siyw-select-input"
+          className={`siyw-select-input ${disabled ? "siyw-disabled-input" : ""}`}
           onClick={disabled ? null : () => setIsOpen(!isOpen)}
           style={customStyles.input}
         >
-          <span >{value || placeholder}</span>
+          <span>{value || placeholder}</span>
         </div>
 
-        {isOpen && (
+        {isOpen && !disabled && (
           <div className="siyw-select-dropdown" style={customStyles.dropdown}>
             {options.map((optionSet, index) => (
               <div
@@ -60,7 +61,7 @@ const MultiSelect = (props) => {
           </div>
         )}
 
-        {isOpen && (
+        {isOpen && !disabled && (
           <div className="overlay" onClick={() => setIsOpen(false)}></div>
         )}
       </div>

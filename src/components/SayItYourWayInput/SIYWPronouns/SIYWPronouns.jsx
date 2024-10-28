@@ -6,8 +6,8 @@ import "./siyw-pronouns-styles.css";
 const SIYWPronouns = (props) => {
   const {
     onChange,
-    placeholder = "Please select...",
-    helperText,
+    placeholder = "Please select your preference...",
+    helperText = "This information is only used to ensure respectful and accurate communication.",
     errorText,
     disabled,
     value = "",
