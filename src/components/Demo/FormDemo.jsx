@@ -3,9 +3,10 @@ import SIYWPronouns from "../SayItYourWayInput/SIYWPronouns/SIYWPronouns";
 import SIYWGenderId from "../SayItYourWayInput/SIYWGenderId/SIYWGenderId";
 
 const FormDemo = () => {
-  const [pronounsValue, setPronounsValue] = useState("");
-  const [pronounError, setPronounError] = useState("");
+  const [pronounsValue, setPronounsValue] = useState("they/them");
   const [genderValue, setGenderValue] = useState("");
+  const [pronounError, setPronounError] = useState("");
+  const [genderError, setGenderError] = useState("");
 
   const onGenderChange = (item) => {
     console.log("genderValue::", item);
@@ -18,7 +19,8 @@ const FormDemo = () => {
 
   useEffect(() => {
     setPronounError("");
-  }, [pronounsValue]);
+    setGenderError("");
+  }, [pronounsValue, genderValue]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -28,6 +30,14 @@ const FormDemo = () => {
     } else {
       setPronounError("");
     }
+
+    if (!genderValue) {
+      setGenderError("Please make a selection.");
+      return;
+    } else {
+      setGenderError("");
+    }
+
     console.log(pronounsValue);
   };
 
@@ -37,24 +47,26 @@ const FormDemo = () => {
       <SIYWGenderId
         key="gender"
         selectionType="select"
+        // label="Gender Identity"
         onChange={onGenderChange}
         value={genderValue}
-        label="Gender Identity"
-        placeholder="Gender Identity"
         helperText="Please select your gender identity."
         customOptions={false}
+        required
+        errorText={genderError}
         // error='Please select an option'
-        // disabled
+        disabled
       />
       <SIYWPronouns
         key="pronouns"
         onChange={onPronounsChange}
         value={pronounsValue}
-        label="Preferred Pronouns"
+        // label="Preferred Pronouns"
         placeholder="Please select your preference..."
         helperText="This information is only used to ensure respectful and accurate communication."
         errorText={pronounError}
-        // required
+        required
+        disabled
       />
       <button type="submit">Submit</button>
     </form>

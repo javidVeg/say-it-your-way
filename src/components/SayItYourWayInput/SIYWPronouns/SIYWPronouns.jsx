@@ -88,7 +88,6 @@ const SIYWPronouns = (props) => {
   return (
     <>
       <MultiSelect
-        className={disabled ? "disabled" : ""}
         value={value || ""}
         placeholder={!value ? placeholder : undefined}
         options={optionsArray}

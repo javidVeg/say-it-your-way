@@ -1,41 +1,47 @@
-import React, { useState } from "react";
+import React from "react";
 
 const SelectInput = (props) => {
   const {
     value,
     onChange,
     options,
-    placeholder = "Select an option",
-    disabled = false,
-    className = "",
-    style = {},
+    label,
+    placeholder,
+    disabled,
+    className,
+    style,
     renderOption,
-    placeholderProps = {},
-    optionProps = {},
+    placeholderProps,
+    optionProps,
     onFocus,
     onBlur,
+    required,
   } = props;
 
   return (
-    <select
-      value={value || ""}
-      onChange={onChange}
-      disabled={disabled}
-      className={`siyw-select ${className}`}
-      style={style}
-      onFocus={onFocus}
-      onBlur={onBlur}
-    >
-      <option value="" disabled {...placeholderProps}>
-        {placeholder}
-      </option>
-
-      {options.map((option, index) => (
-        <option key={index} value={option.value} {...optionProps}>
-          {renderOption ? renderOption(option) : option.label}
+    <div>
+      {label && <label>{label}</label>}
+      <select
+        value={value || ""}
+        onChange={onChange}
+        disabled={disabled}
+        className={`siyw-select${disabled ? "-disabled" : ""} ${className} `}
+        style={style}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        required={required}
+      >
+        <option value="" disabled {...placeholderProps}>
+          {placeholder}
         </option>
-      ))}
-    </select>
+
+        {options.map((option, index) => (
+          <option key={index} value={option.value} {...optionProps}>
+            {renderOption ? renderOption(option) : option.label}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 };
 

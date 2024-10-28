@@ -3,7 +3,6 @@ import "./siyw-gender-styles.css";
 import { genderIdentities } from "../../../data/identity";
 import SelectInput from "../components/SelectInput";
 
-
 /**
  * SIYWGenderId is a customizable component that provides a dropdown menu to select gender identities.
  * It includes a default set of gender identities and allows users to add custom options.
@@ -50,14 +49,16 @@ import SelectInput from "../components/SelectInput";
  *   onChange={(selectedValue) => console.log(selectedValue)}
  * />
  */
+
 const SIYWGenderId = (props) => {
   const {
     onChange,
     label,
-    placeholder = "Please select...",
+    placeholder = "Please select a gender identity...",
     helperText,
-    error,
-    disabled,
+    errorText,
+    required,
+    disabled = false,
     value = "",
     customOptions,
     className = "",
@@ -91,6 +92,13 @@ const SIYWGenderId = (props) => {
     onChange(selectedOption.value);
   };
 
+  const bottomHelperText = () =>
+    required && errorText ? (
+      <p className="error-text">{errorText}</p>
+    ) : helperText ? (
+      <p className="helper-text">{helperText}</p>
+    ) : null;
+
   return (
     <>
       <SelectInput
@@ -107,10 +115,10 @@ const SIYWGenderId = (props) => {
         optionProps={optionProps}
         onFocus={onFocus}
         onBlur={onBlur}
+        required={required}
       />
 
-      {!error && helperText && <p className="siyw-helper-text">{helperText}</p>}
-      {error && <p className="siyw-error-text">Error: {error}</p>}
+      {bottomHelperText()}
     </>
   );
 };

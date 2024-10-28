@@ -21,6 +21,20 @@
   color: var(--main-font-color);
   width: 100%;
 }
+.siyw-select-disabled {
+  padding: var(--input-padding); 
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  border-radius: var(--border-radius);
+  border: 1px solid grey;
+  cursor: pointer;
+  transition: border-color 0.25s;
+  color: var(--main-font-color);
+  width: 100%;
+}
+
+
 
 .siyw-error-text {
   color: red;

@@ -17,13 +17,13 @@ const MultiSelect = (props) => {
 
   return (
       <div
-        className={`siyw-container ${className}`}
+        className={`siyw-container`}
         style={customStyles.container}
       >
-        <label>{label}</label>
+        {label && <label>{label}</label>}
         <div
           className="siyw-select-input"
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={disabled ? null : () => setIsOpen(!isOpen)}
           style={customStyles.input}
         >
           <span >{value || placeholder}</span>
